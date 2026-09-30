@@ -63,6 +63,16 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   double get _coverage => _covered.where((c) => c).length / _strips;
 
   @override
+  void initState() {
+    super.initState();
+    // Create every ticker now, never lazily during dispose.
+    _fadeTicker;
+    _auto;
+    _finish;
+    _hint;
+  }
+
+  @override
   void dispose() {
     _fadeTicker.dispose();
     _auto.dispose();

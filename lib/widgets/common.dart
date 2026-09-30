@@ -129,6 +129,7 @@ class _PrimaryButtonState extends State<PrimaryButton> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
+    _shine;
     if (widget.shine) _shine.repeat();
   }
 
