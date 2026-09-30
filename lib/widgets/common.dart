@@ -362,10 +362,11 @@ class _AppTextFieldState extends State<AppTextField> {
                 ),
               ),
               if (widget.enableToggle)
-                TextLink(
-                  _hidden ? 'Show' : 'Hide',
-                  style: AppText.link.copyWith(fontSize: 12),
-                  onTap: () => setState(() => _hidden = !_hidden),
+                IconButton(
+                  icon: Icon(_hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined, size: 20),
+                  color: AppColors.primary,
+                  tooltip: _hidden ? 'Show password' : 'Hide password',
+                  onPressed: () => setState(() => _hidden = !_hidden),
                 ),
             ],
           ),

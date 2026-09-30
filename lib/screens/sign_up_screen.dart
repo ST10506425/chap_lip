@@ -111,6 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   hint: 'Create a password',
                   controller: _password,
                   obscure: true,
+                  enableToggle: true,
                   helper: 'Use at least 8 characters.',
                   error: _passwordError,
                   textInputAction: TextInputAction.done,
