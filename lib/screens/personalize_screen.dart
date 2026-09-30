@@ -8,7 +8,7 @@ import '../widgets/common.dart';
 import '../widgets/motion.dart';
 import 'choose_lips_screen.dart';
 
-const identityOptions = ['Woman', 'Man', 'Non-binary', 'Prefer not to say'];
+const identityOptions = ['Female', 'Male'];
 
 /// 04 Personalize: how do you identify?
 class PersonalizeScreen extends StatefulWidget {
@@ -67,7 +67,7 @@ class _PersonalizeScreenState extends State<PersonalizeScreen> {
   }
 }
 
-/// The four identity rows with animated radio dots.
+/// The two identity rows with animated radio dots.
 class IdentityOptions extends StatelessWidget {
   const IdentityOptions({super.key, required this.value, required this.onChanged, this.delayStart = 0, this.gap = 14, this.height = 56});
 
