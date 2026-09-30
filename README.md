@@ -170,6 +170,30 @@ flutter run --release
 
 The app stays installed on the phone afterwards, so you can open it from the home screen like any other app.
 
+### Update the app on your phone, then unplug
+
+Use this after changing code when you want to test without the phone staying attached to the computer. Run each command on its own, from the `chap_lip` folder, with the phone plugged in and unlocked.
+
+1. Find your phone's device ID (the second column, for example `QTC4C19A18009821`):
+
+```bash
+flutter devices
+```
+
+2. Build the release APK (takes about a minute after the first build):
+
+```bash
+flutter build apk --release
+```
+
+3. Install it over the old version. Your account and progress are kept (`flutter install` would uninstall first and wipe them):
+
+```powershell
+& "$env:LOCALAPPDATA\Android\sdk\platform-tools\adb.exe" -s YOUR_DEVICE_ID install -r build\app\outputs\flutter-apk\app-release.apk
+```
+
+When it prints `Success`, the command is finished. Unplug the phone and open **Moist Me Up** from the home screen.
+
 ### Option B: build an installable APK file
 
 ```bash
@@ -276,6 +300,15 @@ test/                        Database tests
 
 * **`flutter devices` does not list my Android phone:** make sure USB debugging is on, try a different cable or port, and accept the "Allow USB debugging" prompt on the phone. On Windows, install the Google USB driver from Android Studio's SDK Manager.
 * **Gradle or Android licence errors:** run `flutter doctor --android-licenses`, then `flutter clean` and `flutter pub get`, and try again.
+* **`zip END header not found`, `did not have a source.properties file` or `Could not read workspace metadata`:** a download was cut off, almost always because the C: drive is full. Free up space, then move Gradle's downloads to another drive and delete the broken copy on C:. Run each line on its own in PowerShell, then open a new PowerShell window before building again:
+
+```powershell
+[Environment]::SetEnvironmentVariable('GRADLE_USER_HOME','D:\.gradle','User')
+```
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.gradle"
+```
 * **iPhone says "Untrusted Developer":** trust your certificate under Settings, General, VPN and Device Management.
 * **I forgot my password:** tap "Forgot password?" on the log in screen and confirm the name and email you signed up with. Because accounts only exist on the phone, there is no email reset.
 * **Start fresh:** log out from the profile screen, or uninstall and reinstall the app to wipe all local data.
