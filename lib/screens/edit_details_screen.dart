@@ -73,9 +73,10 @@ class _EditDetailsScreenState extends State<EditDetailsScreen> {
   Widget build(BuildContext context) {
     return DesignPage(
       bottom: 38,
+      showBack: true,
       children: [
         const ScreenHeader(
-          eyebrow: 'Your details',
+          eyebrow: 'Profile',
           title: 'Just a little tweak.',
           subtitle: 'Everything stays safely on this phone.',
         ),

@@ -60,7 +60,7 @@ class ProfileScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        _displayName(user.name),
+                        user.glossyName,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppText.section.copyWith(fontSize: 17, letterSpacing: -0.2),
@@ -113,7 +113,7 @@ class ProfileScreen extends StatelessWidget {
         Reveal(
           delay: Reveal.step(6),
           child: _MenuRow(
-            label: 'Edit my details',
+            label: 'Profile',
             onTap: () => Navigator.of(context).push(SoftRoute(builder: (_) => const EditDetailsScreen())),
           ),
         ),
@@ -122,12 +122,6 @@ class ProfileScreen extends StatelessWidget {
         const Spacer(),
       ],
     );
-  }
-
-  static String _displayName(String name) {
-    final trimmed = name.trim();
-    if (trimmed.isEmpty) return 'Glossy human';
-    return trimmed[0].toUpperCase() + trimmed.substring(1);
   }
 }
 

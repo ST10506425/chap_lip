@@ -65,6 +65,16 @@ void main() {
     expect(stats.levelLabel, '01');
   });
 
+  test('lips stay moist for as long as the last product lasts', () async {
+    final user = await store.signUp(name: 'Ari', email: 'ari@example.com', password: 'glossy123');
+    expect((await store.loadStats(user.id)).moistUntil, isNull);
+
+    await store.recordApplication(user.id, 'vaseline');
+    final stats = await store.loadStats(user.id);
+    expect(stats.moistUntil, stats.lastAppliedAt!.add(const Duration(hours: 1)));
+    expect(stats.moistUntil!.isAfter(DateTime.now()), isTrue);
+  });
+
   test('profile updates persist lips, product and password', () async {
     final user = await store.signUp(name: 'Ari', email: 'ari@example.com', password: 'glossy123');
     final saved = await store.updateProfile(

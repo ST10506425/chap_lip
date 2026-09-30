@@ -1,4 +1,5 @@
 import 'lip_style.dart';
+import 'product.dart';
 
 /// A locally stored account.
 class UserProfile {
@@ -21,6 +22,12 @@ class UserProfile {
   final LipShade lipShade;
   final String activeProductId;
   final bool onboarded;
+
+  /// "Glossy Sarah" from the first word of the name, or "Glossy human".
+  String get glossyName {
+    final first = name.trim().split(RegExp(r'\s+')).first;
+    return first.isEmpty ? 'Glossy human' : 'Glossy ${first[0].toUpperCase()}${first.substring(1)}';
+  }
 
   factory UserProfile.fromRow(Map<String, Object?> row) => UserProfile(
         id: row['id'] as int,
@@ -61,6 +68,8 @@ class LipStats {
     required this.unlocked,
     required this.usedProducts,
     required this.streakDays,
+    this.lastAppliedAt,
+    this.lastProductId,
   });
 
   static const empty = LipStats(
@@ -76,6 +85,11 @@ class LipStats {
   /// Products that have been applied at least once.
   final Set<String> usedProducts;
   final int streakDays;
+  final DateTime? lastAppliedAt;
+  final String? lastProductId;
+
+  /// When the last application wears off, based on the product used.
+  DateTime? get moistUntil => lastAppliedAt?.add(Product.byId(lastProductId).lastsFor);
 
   int get level => (1 + applications ~/ 10).clamp(1, 99);
   String get levelLabel => level.toString().padLeft(2, '0');

@@ -16,6 +16,7 @@ class DesignPage extends StatelessWidget {
     this.bottom = 16,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.bottomBar,
+    this.showBack = false,
   });
 
   final List<Widget> children;
@@ -23,6 +24,7 @@ class DesignPage extends StatelessWidget {
   final double bottom;
   final CrossAxisAlignment crossAxisAlignment;
   final Widget? bottomBar;
+  final bool showBack;
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +33,22 @@ class DesignPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            if (showBack)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 4),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    color: AppColors.primary,
+                    tooltip: 'Back',
+                    onPressed: () => Navigator.of(context).maybePop(),
+                  ),
+                ),
+              ),
             Expanded(
               child: DesignBody(
-                top: top,
+                top: showBack ? 8 : top,
                 bottom: bottom,
                 crossAxisAlignment: crossAxisAlignment,
                 children: children,
@@ -472,14 +487,15 @@ class SoftCard extends StatelessWidget {
   }
 }
 
-/// Floating three tab bar: Play, Collection, You.
+/// Floating three tab bar: Moist Up, Collection, You.
 class AppBottomNav extends StatelessWidget {
   const AppBottomNav({super.key, required this.index, required this.onTap});
 
   final int index;
   final ValueChanged<int> onTap;
 
-  static const labels = ['Play', 'Collection', 'You'];
+  static const labels = ['Moist Up', 'Collection', 'You'];
+  static const icons = [Icons.water_drop_rounded, Icons.auto_awesome_rounded, Icons.person_rounded];
 
   @override
   Widget build(BuildContext context) {
@@ -497,23 +513,21 @@ class AppBottomNav extends StatelessWidget {
                 pressedScale: 0.9,
                 child: Column(
                   children: [
-                    const SizedBox(height: 13),
+                    const SizedBox(height: 12),
                     TweenAnimationBuilder<double>(
                       tween: Tween(end: active ? 1 : 0),
                       duration: const Duration(milliseconds: 380),
                       curve: Curves.easeOutBack,
-                      builder: (context, t, _) => Container(
-                        width: 12,
-                        height: 12,
-                        transform: Matrix4.diagonal3Values(1 + 0.25 * math.sin(t * math.pi), 1 + 0.25 * math.sin(t * math.pi), 1),
-                        transformAlignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color.lerp(AppColors.track, AppColors.primary, t.clamp(0, 1)),
-                          shape: BoxShape.circle,
+                      builder: (context, t, _) => Transform.scale(
+                        scale: 1 + 0.25 * math.sin(t * math.pi),
+                        child: Icon(
+                          icons[i],
+                          size: 24,
+                          color: Color.lerp(AppColors.muted, AppColors.primary, t.clamp(0, 1)),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     AnimatedDefaultTextStyle(
                       duration: const Duration(milliseconds: 260),
                       style: TextStyle(

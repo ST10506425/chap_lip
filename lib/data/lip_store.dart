@@ -252,7 +252,17 @@ class SqliteLipStore implements LipStore {
       'FROM applications WHERE user_id = ? ORDER BY day DESC',
       [userId],
     );
+    final last = await _db.query(
+      'applications',
+      columns: ['product_id', 'applied_at'],
+      where: 'user_id = ?',
+      whereArgs: [userId],
+      orderBy: 'applied_at DESC',
+      limit: 1,
+    );
     return LipStats(
+      lastAppliedAt: last.isEmpty ? null : DateTime.fromMillisecondsSinceEpoch(last.first['applied_at'] as int),
+      lastProductId: last.isEmpty ? null : last.first['product_id'] as String,
       applications: count,
       unlocked: {Product.vaseline.id, ...unlockRows.map((r) => r['product_id'] as String)},
       usedProducts: usedRows.map((r) => r['product_id'] as String).toSet(),

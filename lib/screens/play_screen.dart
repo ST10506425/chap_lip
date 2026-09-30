@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -60,7 +61,17 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
   bool _saving = false;
   int _burst = 0;
 
+  /// True while the last application is still moisturising the lips.
+  bool _resting = false;
+  late final Timer _clock;
+
   double get _coverage => _covered.where((c) => c).length / _strips;
+
+  /// When the last application wears off, or null if it already has.
+  DateTime? get _moistUntil {
+    final until = context.read<AppState>().stats.moistUntil;
+    return until != null && until.isAfter(DateTime.now()) ? until : null;
+  }
 
   @override
   void initState() {
@@ -70,10 +81,31 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
     _auto;
     _finish;
     _hint;
+    if (_moistUntil != null) _setResting(true);
+    _clock = Timer.periodic(const Duration(seconds: 30), (_) {
+      if (_resting && _moistUntil == null) _setResting(false);
+      setState(() {});
+    });
+  }
+
+  /// Shows the lips as already glossy (true) or back to chapped (false).
+  void _setResting(bool resting) {
+    _resting = resting;
+    _finishing = resting;
+    _touched = resting;
+    _reveal.fillRange(0, _strips, resting ? 1 : 0);
+    _covered.fillRange(0, _strips, resting);
+    _finish.value = resting ? 1 : 0;
+  }
+
+  static String _timeLeft(DateTime until) {
+    final minutes = (until.difference(DateTime.now()).inSeconds / 60).ceil();
+    return minutes >= 60 ? '${minutes ~/ 60}h ${minutes % 60}m' : '${minutes}m';
   }
 
   @override
   void dispose() {
+    _clock.cancel();
     _fadeTicker.dispose();
     _auto.dispose();
     _finish.dispose();
@@ -185,6 +217,8 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
     final product = state.activeProduct;
     final next = state.nextUnlock;
     final stats = state.stats;
+    final moistUntil = _resting ? _moistUntil : null;
+    final onLips = _resting ? Product.byId(stats.lastProductId) : product;
 
     return DesignBody(
       top: 33,
@@ -194,7 +228,14 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
           delay: Reveal.step(0),
           child: Row(
             children: [
-              Expanded(child: Text('Hey, glossy human', style: AppText.title.copyWith(fontSize: 26, letterSpacing: -0.5))),
+              Expanded(
+                child: Text(
+                  'Hey, ${user.glossyName}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppText.title.copyWith(fontSize: 26, letterSpacing: -0.5),
+                ),
+              ),
               _LevelChip(level: stats.levelLabel),
             ],
           ),
@@ -240,7 +281,7 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
                         left: 0,
                         right: 0,
                         top: 79,
-                        child: Center(child: _buildLips(user, product)),
+                        child: Center(child: _buildLips(user, onLips)),
                       ),
                       Positioned(
                         left: 0,
@@ -252,7 +293,13 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
                         left: 0,
                         right: 0,
                         top: 240,
-                        child: Center(child: _PromptText(coverage: _coverage, finishing: _finishing)),
+                        child: Center(
+                          child: _PromptText(
+                            coverage: _coverage,
+                            finishing: _finishing,
+                            moistLeft: moistUntil == null ? null : _timeLeft(moistUntil),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -297,7 +344,7 @@ class _PlayScreenState extends State<PlayScreen> with TickerProviderStateMixin {
         Reveal(
           delay: Reveal.step(5),
           child: PrimaryButton(
-            label: 'Apply a little love',
+            label: moistUntil == null ? 'Apply a little love' : 'Still moist for ${_timeLeft(moistUntil)}',
             loading: _saving,
             onPressed: _finishing ? null : _startAuto,
           ),
@@ -439,14 +486,17 @@ class _NextUnlockCard extends StatelessWidget {
 }
 
 class _PromptText extends StatelessWidget {
-  const _PromptText({required this.coverage, required this.finishing});
+  const _PromptText({required this.coverage, required this.finishing, this.moistLeft});
 
   final double coverage;
   final bool finishing;
+  final String? moistLeft;
 
   @override
   Widget build(BuildContext context) {
-    final text = finishing
+    final text = moistLeft != null
+        ? 'Moisturised · $moistLeft left'
+        : finishing
         ? 'Ooh, so glossy!'
         : coverage > 0
             ? 'Keep swiping, almost there'

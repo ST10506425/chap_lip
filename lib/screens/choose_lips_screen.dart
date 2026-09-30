@@ -42,6 +42,7 @@ class _ChooseLipsScreenState extends State<ChooseLipsScreen> {
   Widget build(BuildContext context) {
     return DesignPage(
       bottom: 56,
+      showBack: widget.editing,
       children: [
         ScreenHeader(
           eyebrow: widget.editing ? 'Your pout' : 'Make it yours · 2 of 2',

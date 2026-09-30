@@ -56,6 +56,7 @@ class Product {
     required this.panel,
     required this.blurb,
     required this.upgradeWord,
+    required this.lastsFor,
     this.tint,
     this.tintStrength = 0,
     this.shimmer = false,
@@ -77,6 +78,9 @@ class Product {
 
   /// "Meet your {upgradeWord} upgrade."
   final String upgradeWord;
+
+  /// How long the lips stay moisturised after one application.
+  final Duration lastsFor;
 
   /// Colour the product leaves on the lips (null keeps the natural shade).
   final Color? tint;
@@ -107,6 +111,7 @@ class Product {
     panel: Color(0xFFE1E7F4),
     blurb: 'Your first little classic.',
     upgradeWord: 'classic',
+    lastsFor: Duration(hours: 1),
   );
 
   static const roseBalm = Product(
@@ -119,6 +124,7 @@ class Product {
     panel: Color(0xFFF7DDE8),
     blurb: 'A rosy little balm stick.',
     upgradeWord: 'rosy',
+    lastsFor: Duration(hours: 2),
     tint: Color(0xFFEF7897),
     tintStrength: 0.35,
   );
@@ -137,6 +143,7 @@ class Product {
     panel: Color(0xFFF3DCE6),
     blurb: 'A juicy berry lipstick.',
     upgradeWord: 'juicy',
+    lastsFor: Duration(hours: 3),
     tint: Color(0xFFB8325E),
     tintStrength: 0.75,
     extraGloss: true,
@@ -152,6 +159,7 @@ class Product {
     panel: Color(0xFFFCE6D9),
     blurb: 'A buttery peach balm stick.',
     upgradeWord: 'peachy',
+    lastsFor: Duration(hours: 2),
     tint: Color(0xFFF4A08A),
     tintStrength: 0.4,
   );
@@ -166,6 +174,7 @@ class Product {
     panel: Color(0xFFE3E9F8),
     blurb: 'An overnight cloud of moisture.',
     upgradeWord: 'dreamy',
+    lastsFor: Duration(hours: 4),
     extraGloss: true,
   );
 
@@ -183,6 +192,7 @@ class Product {
     panel: Color(0xFFF8EACB),
     blurb: 'A shimmering golden lipstick.',
     upgradeWord: 'golden',
+    lastsFor: Duration(hours: 3),
     tint: Color(0xFFE0766A),
     tintStrength: 0.55,
     shimmer: true,

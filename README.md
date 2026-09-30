@@ -45,13 +45,13 @@ The app follows the ten screens in the Figma file (the exported designs live on 
 | 03 | Log in | Return to an existing account, with a password reset sheet |
 | 04 | Personalize | "How do you identify?" (optional, step 1 of 2) |
 | 05 | Choose lips | Pick your pout and shade with live previews (step 2 of 2) |
-| 06 | Play | Chapped lips, your next unlock, and your current product |
+| 06 | Moist Up | Chapped lips, your next unlock, and your current product |
 | 07 | Application complete | "+1 application" and progress toward the next treat |
 | 08 | Product unlocked | Celebration when a milestone is reached |
 | 09 | Collection | "The gloss club" shelf of owned and locked products |
 | 10 | Your profile | Your lips, level, stats and account menu |
 | Extra | Customize my lips | Reuses screen 05 to change your pout later |
-| Extra | Edit my details | Change name, email, identity or password |
+| Extra | Profile | Change name, email, identity or password |
 
 Colours, spacing and type (Inter) were measured from the design exports so the screens line up with them on a standard 390 by 844 phone. On smaller phones the screens scroll instead of squashing.
 
@@ -59,7 +59,7 @@ Colours, spacing and type (Inter) were measured from the design exports so the s
 
 ## How the game works
 
-1. Open the **Play** tab. Your lips are chapped.
+1. Open the **Moist Up** tab. Your lips are chapped.
 2. Apply your product in any of three ways:
    * **Swipe** a finger across the lips.
    * **Drag** the product from under the lips and rub it across them.
@@ -68,6 +68,7 @@ Colours, spacing and type (Inter) were measured from the design exports so the s
 4. You land on **Application complete**, which shows how close you are to the next product.
 5. When you reach a milestone, **Product unlocked** appears. Choose "Try my ..." to start using it straight away, or "View my collection" to see your shelf.
 6. In **Collection**, tap any owned product to switch to it. Tap a locked one to see how many applications are left.
+7. Your lips stay moisturised for a while, depending on what you applied: Vaseline 1 hour, Rose balm and Peach butter 2 hours, Berry gloss and Golden glow 3 hours, Cloud mask 4 hours. The **Moist Up** tab shows how long is left, and the lips turn chapped again when it wears off.
 
 Each product leaves its own finish on your lips: Vaseline keeps your natural shade, Rose balm adds a rosy tint, Berry gloss is a bold berry lipstick with extra shine, Peach butter warms the colour, Cloud mask adds a wet look glow and Golden glow adds twinkling gold shimmer.
 
